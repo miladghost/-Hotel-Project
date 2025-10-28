@@ -4,6 +4,7 @@ import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
 import { useGetBookings } from "./useGetBookings";
 import Pagination from "../../ui/Pagination";
+import AddBooking from "./AddBooking";
 
 function BookingTable() {
   const { bookings, isLoading, error, count } = useGetBookings();
@@ -63,6 +64,7 @@ function BookingTable() {
           <Pagination count={count} />
         </Table.Footer>
       </Table>
+      <AddBooking />
     </Menus>
   );
 }
