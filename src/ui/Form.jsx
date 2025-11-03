@@ -16,6 +16,7 @@ const Form = styled.form`
     props.type === "modal" &&
     css`
       width: 80rem;
+      margin-top: 40px;
     `}
   display:flex;
   flex-direction: column;

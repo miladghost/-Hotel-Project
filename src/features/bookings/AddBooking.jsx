@@ -1,17 +1,11 @@
 import Button from "../../ui/Button";
-import Modal from "../../ui/Modal";
-import CreateNewBookingForm from "./CreateNewBookingForm";
-
+import { useNavigate } from "react-router-dom";
 function AddBooking() {
+  const navigate = useNavigate();
   return (
-    <Modal>
-      <Modal.Open opens="addBooking">
-        <Button>Add new Booking</Button>
-      </Modal.Open>
-      <Modal.Window name="addBooking">
-        <CreateNewBookingForm />
-      </Modal.Window>
-    </Modal>
+    <div>
+      <Button onClick={() => navigate("/addBooking")}>Add new Booking</Button>
+    </div>
   );
 }
 

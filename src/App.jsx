@@ -18,6 +18,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
 import { Suspense, lazy } from "react";
+import CreateNewBookingForm from "./features/bookings/CreateNewBookingForm";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Bookings = lazy(() => import("./pages/Bookings"));
 const Booking = lazy(() => import("./pages/Booking"));
@@ -53,6 +54,7 @@ function App() {
                 <Route index element={<Navigate replace to="dashboard" />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="bookings" element={<Bookings />} />
+                <Route path="addBooking" element={<CreateNewBookingForm />} />
                 <Route path="bookings/:bookingId" element={<Booking />} />
                 <Route path="checkin/:bookingId" element={<Checkin />} />
                 <Route path="cabins" element={<Cabins />} />
