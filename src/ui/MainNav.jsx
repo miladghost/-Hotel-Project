@@ -7,6 +7,7 @@ import {
   HiOutlineUsers,
 } from "react-icons/hi2";
 import { IoSettingsOutline } from "react-icons/io5";
+import { GrUserAdd } from "react-icons/gr";
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -77,6 +78,12 @@ function MainNav() {
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>Users</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/guests">
+            <GrUserAdd />
+            <span>Guests</span>
           </StyledNavLink>
         </li>
         <li>

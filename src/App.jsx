@@ -19,6 +19,8 @@ import { Toaster } from "react-hot-toast";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
 import { Suspense, lazy } from "react";
 import CreateNewBookingForm from "./features/bookings/CreateNewBookingForm";
+import GuestsTable from "./features/guests/GuestsTable";
+import Guest from "./pages/Guest";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Bookings = lazy(() => import("./pages/Bookings"));
 const Booking = lazy(() => import("./pages/Booking"));
@@ -60,6 +62,7 @@ function App() {
                 <Route path="cabins" element={<Cabins />} />
                 <Route path="account" element={<Account />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="guests" element={<Guest />} />
                 <Route path="users" element={<Users />} />
               </Route>
               <Route path="login" element={<Login />} />

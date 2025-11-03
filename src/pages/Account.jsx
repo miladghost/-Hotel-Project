@@ -5,8 +5,8 @@ import Row from "../ui/Row";
 
 function Account() {
   return (
-    <>
-      <Heading as="h2">Update Your Account....</Heading>
+    <Row>
+      <Heading as="h1">Update Your Account....</Heading>
 
       <Row type="userAccount">
         <Heading as="h3">Update user data</Heading>
@@ -17,7 +17,7 @@ function Account() {
         <Heading as="h3">Update password</Heading>
         <UpdatePasswordForm />
       </Row>
-    </>
+    </Row>
   );
 }
 

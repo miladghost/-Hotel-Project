@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import CheckboxV2 from "../../ui/CheckboxV2";
 import { subtractDates } from "../../utils/helpers";
 import { useGetSetting } from "../settings/useGetSetting";
+import { useGetGuests } from "../guests/useGetGuests";
 
 const Styledselect = styled.select`
   border-radius: var(--border-radius-sm);
@@ -19,9 +20,10 @@ const Styledselect = styled.select`
   box-shadow: var(--shadow-sm);
 `;
 function CreateNewBookingForm() {
+  const navigate = useNavigate();
   const { isLoading: isLoading1, cabinsData } = useGetCabinData();
   const { settingData, isLoading: isLoading2 } = useGetSetting();
-  const navigate = useNavigate();
+  const { guests, isLoading: isLoading3 } = useGetGuests();
   const { register, formState, reset, getValues, handleSubmit, watch } =
     useForm({
       defaultValues: {
@@ -29,7 +31,7 @@ function CreateNewBookingForm() {
         hasBreakfast: false,
       },
     });
-  if (isLoading1 || isLoading2) return <Spinner />;
+  if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
   const { breakfastPrice } = settingData;
   const cabinId = watch("cabinId");
   const maxCapacity = cabinsData
@@ -80,11 +82,17 @@ function CreateNewBookingForm() {
         </Styledselect>
       </FormRow>
       <FormRow label="Full Name" errors={errors?.fullName?.message}>
-        <Input
+        <Styledselect
           id="fullName"
-          type="text"
           {...register("fullName", { required: "this field is required" })}
-        />
+        >
+          <option value="">select guest...</option>
+          {guests.map((guest) => (
+            <option value={guest.id} key={guest.id}>
+              {guest.fullName}
+            </option>
+          ))}
+        </Styledselect>
       </FormRow>
       <FormRow label="Email" errors={errors?.email?.message}>
         <Input
