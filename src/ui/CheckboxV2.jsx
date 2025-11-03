@@ -17,7 +17,7 @@ const StyledCheckbox = styled.div`
   }
 `;
 
-function Checkbox({ register, id, name }) {
+function CheckboxV2({ register, id, name }) {
   return (
     <StyledCheckbox>
       <input type="checkbox" id={id} {...register(name)} />
@@ -25,4 +25,4 @@ function Checkbox({ register, id, name }) {
   );
 }
 
-export default Checkbox;
+export default CheckboxV2;

@@ -5,10 +5,13 @@ import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 import { useGetCabinData } from "../cabins/useGetCabinData";
 import Textarea from "../../ui/Textarea";
-import Checkbox from "../../ui/Checkbox";
 import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
 import { useNavigate } from "react-router-dom";
+import CheckboxV2 from "../../ui/CheckboxV2";
+import { subtractDates } from "../../utils/helpers";
+import { useGetSetting } from "../settings/useGetSetting";
+
 const Styledselect = styled.select`
   border-radius: var(--border-radius-sm);
   padding: 10px;
@@ -16,29 +19,61 @@ const Styledselect = styled.select`
   box-shadow: var(--shadow-sm);
 `;
 function CreateNewBookingForm() {
-  const { isLoading, cabinsData } = useGetCabinData();
+  const { isLoading: isLoading1, cabinsData } = useGetCabinData();
+  const { settingData, isLoading: isLoading2 } = useGetSetting();
   const navigate = useNavigate();
-  const { register, formState, reset, getValues, handleSubmit } = useForm({
-    defaultValues: {
-      isPaid: false,
-      hasBreakfast: false,
-    },
-  });
+  const { register, formState, reset, getValues, handleSubmit, watch } =
+    useForm({
+      defaultValues: {
+        isPaid: false,
+        hasBreakfast: false,
+      },
+    });
+  if (isLoading1 || isLoading2) return <Spinner />;
+  const { breakfastPrice } = settingData;
+  const cabinId = watch("cabinId");
+  const maxCapacity = cabinsData
+    ?.filter((cabin) => cabin.id === Number(cabinId))
+    .at(0)?.maxCapacity;
   const { errors } = formState;
-  if (isLoading) return <Spinner />;
   function onSubmit(data) {
-    console.log(data);
+    const {
+      startDate,
+      endDate,
+      cabinId,
+      email,
+      fullName,
+      hasBreakfast,
+      isPaid,
+      numGuests,
+      observations,
+    } = data;
+    const filterdCabinData = cabinsData?.filter(
+      (cabin) => cabin.id === Number(cabinId)
+    );
+    console.log(filterdCabinData);
+    const numNights = subtractDates(startDate, endDate) * -1;
+    const cabinPrice =
+      filterdCabinData?.at(0).regularPrice - filterdCabinData?.at(0).discount;
+    console.log(cabinPrice);
+    const extrasPrice = hasBreakfast
+      ? breakfastPrice * numNights * numGuests
+      : 0;
+    const totalPrice = cabinPrice + extrasPrice;
+
+    console.log(extrasPrice);
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Cabin Name" errors={errors?.name?.message}>
+      <FormRow label="Cabin Name" errors={errors?.cabinId?.message}>
         {/* <Select value={cabinNames} options={cabinNames} /> */}
         <Styledselect
-          id="name"
-          {...register("name", { required: "this field is required" })}
+          id="cabinId"
+          {...register("cabinId", { required: "this field is required" })}
         >
+          <option value="">Select cabin...</option>
           {cabinsData.map((cabin) => (
-            <option value={cabin.name} key={cabin.id}>
+            <option value={cabin.id} key={cabin.id}>
               {cabin.name}
             </option>
           ))}
@@ -79,14 +114,32 @@ function CreateNewBookingForm() {
         <Input
           type="number"
           id="numGuests"
-          {...register("numGuests", { required: "this field is required" })}
+          {...register("numGuests", {
+            required: "this field is required",
+            min: {
+              value: 1,
+              message: "it should be at least 1 Guest",
+            },
+            validate: (value) =>
+              Number(value) <= maxCapacity ||
+              `should be lesser or equal than ${maxCapacity}(cabin Capacity)`,
+          })}
         />
       </FormRow>
       <FormRow label="Is Paid?" errors={errors?.isPaid?.message}>
-        <Checkbox id="isPaid" register={register} name="isPaid" />
+        <CheckboxV2 id="isPaid" register={register} name="isPaid" />
       </FormRow>
       <FormRow label="Has BreakFast?" errors={errors?.hasBreakfast?.message}>
-        <Checkbox id="hasBreakfast" register={register} name="hasBreakfast" />
+        <CheckboxV2 id="hasBreakfast" register={register} name="hasBreakfast" />
+      </FormRow>
+      <FormRow label="Status" errors={errors?.status?.message}>
+        <Styledselect
+          id="status"
+          {...register("status", { required: "this field is required" })}
+        >
+          <option value="">Select Status..</option>
+          <option value=""></option>
+        </Styledselect>
       </FormRow>
       <FormRow errors={errors?.observations?.message} label="Observations">
         <Textarea id="observations" {...register("observations")} />
