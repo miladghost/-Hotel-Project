@@ -10,6 +10,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // import Booking from "./pages/Booking";
 // import Checkin from "./pages/Chekin";
 // import AppLayout from "./ui/AppLayout";
+// import Guest from "./pages/Guest";
+// import CreateNewBookingForm from "./features/bookings/CreateNewBookingForm";
 import ProtectedAuth from "./ui/ProtectedAuth";
 import GlobalStyles from "./styles/GlobalStyles";
 import Spinner from "./ui/Spinner";
@@ -18,9 +20,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
 import { Suspense, lazy } from "react";
-import CreateNewBookingForm from "./features/bookings/CreateNewBookingForm";
-import GuestsTable from "./features/guests/GuestsTable";
-import Guest from "./pages/Guest";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Bookings = lazy(() => import("./pages/Bookings"));
 const Booking = lazy(() => import("./pages/Booking"));
@@ -32,6 +31,10 @@ const Settings = lazy(() => import("./pages/Settings"));
 const Users = lazy(() => import("./pages/Users"));
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 const Cabins = lazy(() => import("./pages/Cabins"));
+const Guest = lazy(() => import("./pages/Guest"));
+const CreateNewBookingForm = lazy(() =>
+  import("./features/bookings/CreateNewBookingForm")
+);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: 0 },

@@ -12,7 +12,7 @@ import CheckboxV2 from "../../ui/CheckboxV2";
 import { subtractDates } from "../../utils/helpers";
 import { useGetSetting } from "../settings/useGetSetting";
 import { useGetGuests } from "../guests/useGetGuests";
-
+import { useCreateNewBooking } from "./useCreateNewBooking";
 const Styledselect = styled.select`
   border-radius: var(--border-radius-sm);
   padding: 10px;
@@ -21,57 +21,70 @@ const Styledselect = styled.select`
 `;
 function CreateNewBookingForm() {
   const navigate = useNavigate();
+  const { addBooking, isAdding } = useCreateNewBooking();
   const { isLoading: isLoading1, cabinsData } = useGetCabinData();
   const { settingData, isLoading: isLoading2 } = useGetSetting();
   const { guests, isLoading: isLoading3 } = useGetGuests();
-  const { register, formState, reset, getValues, handleSubmit, watch } =
-    useForm({
-      defaultValues: {
-        isPaid: false,
-        hasBreakfast: false,
-      },
-    });
+  const { register, formState, reset, handleSubmit, watch } = useForm({
+    defaultValues: {
+      isPaid: false,
+      hasBreakfast: false,
+    },
+  });
   if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
   const { breakfastPrice } = settingData;
   const cabinId = watch("cabinId");
+  const guestId = watch("guestId");
+  const email = guests
+    ?.filter((guest) => guest.id === Number(guestId))
+    ?.at(0)?.email;
   const maxCapacity = cabinsData
     ?.filter((cabin) => cabin.id === Number(cabinId))
     .at(0)?.maxCapacity;
   const { errors } = formState;
   function onSubmit(data) {
-    const {
-      startDate,
-      endDate,
-      cabinId,
-      email,
-      fullName,
-      hasBreakfast,
-      isPaid,
-      numGuests,
-      observations,
-    } = data;
+    const { startDate, endDate, cabinId, hasBreakfast, numGuests } = data;
     const filterdCabinData = cabinsData?.filter(
       (cabin) => cabin.id === Number(cabinId)
     );
-    console.log(filterdCabinData);
     const numNights = subtractDates(startDate, endDate) * -1;
     const cabinPrice =
-      filterdCabinData?.at(0).regularPrice - filterdCabinData?.at(0).discount;
-    console.log(cabinPrice);
+      numNights *
+      (filterdCabinData?.at(0).regularPrice - filterdCabinData?.at(0).discount);
     const extrasPrice = hasBreakfast
       ? breakfastPrice * numNights * numGuests
       : 0;
     const totalPrice = cabinPrice + extrasPrice;
+    addBooking(
+      {
+        ...data,
+        extrasPrice,
+        totalPrice,
+        cabinPrice,
+        numNights,
+        cabinId,
+        guestId,
+      },
 
-    console.log(extrasPrice);
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          reset();
+          navigate(-1, { replace: true });
+        },
+      }
+    );
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Cabin Name" errors={errors?.cabinId?.message}>
-        {/* <Select value={cabinNames} options={cabinNames} /> */}
         <Styledselect
+          disabled={isAdding}
           id="cabinId"
-          {...register("cabinId", { required: "this field is required" })}
+          {...register("cabinId", {
+            required: "this field is required",
+            valueAsNumber: true,
+          })}
         >
           <option value="">Select cabin...</option>
           {cabinsData.map((cabin) => (
@@ -81,10 +94,14 @@ function CreateNewBookingForm() {
           ))}
         </Styledselect>
       </FormRow>
-      <FormRow label="Full Name" errors={errors?.fullName?.message}>
+      <FormRow label="Full Name" errors={errors?.guestId?.message}>
         <Styledselect
-          id="fullName"
-          {...register("fullName", { required: "this field is required" })}
+          disabled={isAdding}
+          id="guestId"
+          {...register("guestId", {
+            required: "this field is required",
+            valueAsNumber: true,
+          })}
         >
           <option value="">select guest...</option>
           {guests.map((guest) => (
@@ -95,31 +112,35 @@ function CreateNewBookingForm() {
         </Styledselect>
       </FormRow>
       <FormRow label="Email" errors={errors?.email?.message}>
-        <Input
-          type="email"
-          id="email"
-          {...register("email", {
-            required: "this field is required",
-            pattern: { value: /\S+@\S+\.\S+/, message: "enter a valid email" },
-          })}
-        />
+        <Input type="email" id="email" defaultValue={email} disabled />
       </FormRow>
       <FormRow label="Start date" errors={errors?.startDate?.message}>
         <Input
+          disabled={isAdding}
           type="date"
           id="startDate"
-          {...register("startDate", { required: "this field is required" })}
+          {...register("startDate", {
+            required: "this field is required",
+            setValueAs: (value) =>
+              value ? new Date(value).toISOString() : null,
+          })}
         />
       </FormRow>
       <FormRow label="End date" errors={errors?.endDate?.message}>
         <Input
+          disabled={isAdding}
           type="date"
           id="endDate"
-          {...register("endDate", { required: "this field is required" })}
+          {...register("endDate", {
+            required: "this field is required",
+            setValueAs: (value) =>
+              value ? new Date(value).toISOString() : null,
+          })}
         />
       </FormRow>
       <FormRow label="Number Of Guests" errors={errors?.numGuests?.message}>
         <Input
+          disabled={isAdding}
           type="number"
           id="numGuests"
           {...register("numGuests", {
@@ -135,26 +156,36 @@ function CreateNewBookingForm() {
         />
       </FormRow>
       <FormRow label="Is Paid?" errors={errors?.isPaid?.message}>
-        <CheckboxV2 id="isPaid" register={register} name="isPaid" />
+        <CheckboxV2
+          disabled={isAdding}
+          id="isPaid"
+          register={register}
+          name="isPaid"
+        />
       </FormRow>
       <FormRow label="Has BreakFast?" errors={errors?.hasBreakfast?.message}>
-        <CheckboxV2 id="hasBreakfast" register={register} name="hasBreakfast" />
+        <CheckboxV2
+          disabled={isAdding}
+          id="hasBreakfast"
+          register={register}
+          name="hasBreakfast"
+        />
       </FormRow>
-      <FormRow label="Status" errors={errors?.status?.message}>
-        <Styledselect
-          id="status"
-          {...register("status", { required: "this field is required" })}
-        >
-          <option value="">Select Status..</option>
-          <option value=""></option>
-        </Styledselect>
-      </FormRow>
+
       <FormRow errors={errors?.observations?.message} label="Observations">
-        <Textarea id="observations" {...register("observations")} />
+        <Textarea
+          disabled={isAdding}
+          id="observations"
+          {...register("observations")}
+        />
       </FormRow>
       <FormRow>
-        <Button>Add Booking</Button>
-        <Button variation="secondary" onClick={() => navigate(-1)}>
+        <Button disabled={isAdding}>Add Booking</Button>
+        <Button
+          disabled={isAdding}
+          variation="secondary"
+          onClick={() => navigate(-1)}
+        >
           Back to Bookings
         </Button>
       </FormRow>
