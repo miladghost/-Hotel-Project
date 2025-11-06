@@ -121,9 +121,13 @@ export async function deleteBookingApi(id) {
   }
   return data;
 }
+export async function deleteAllBooking() {
+  const { error } = await supabase.from("bookings").delete().neq("id", 0);
+  if (error) throw new Error(error.message);
+}
 export async function addBookingApi(booking) {
   if (!booking.cabinId || !booking.startDate || !booking.endDate) {
-    throw new Error("no booking obj");
+    throw new Error("No booking object founded");
   }
 
   const { data: existingDate, error: error2 } = await supabase

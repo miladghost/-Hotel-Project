@@ -5,7 +5,7 @@ import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 import { useGetCabinData } from "../cabins/useGetCabinData";
 import Textarea from "../../ui/Textarea";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Button from "../../ui/Button";
 import { useNavigate } from "react-router-dom";
 import CheckboxV2 from "../../ui/CheckboxV2";
@@ -13,11 +13,21 @@ import { subtractDates } from "../../utils/helpers";
 import { useGetSetting } from "../settings/useGetSetting";
 import { useGetGuests } from "../guests/useGetGuests";
 import { useCreateNewBooking } from "./useCreateNewBooking";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const Styledselect = styled.select`
   border-radius: var(--border-radius-sm);
   padding: 10px;
   background-color: var(--color-grey-50);
   box-shadow: var(--shadow-sm);
+`;
+const StyledDatePicker = styled(DatePicker)`
+  border-radius: var(--border-radius-sm);
+  padding: 10px;
+  background-color: var(--color-grey-50);
+  box-shadow: var(--shadow-sm);
+  font-size: 15px;
+  width: 100%;
 `;
 function CreateNewBookingForm() {
   const navigate = useNavigate();
@@ -25,7 +35,7 @@ function CreateNewBookingForm() {
   const { isLoading: isLoading1, cabinsData } = useGetCabinData();
   const { settingData, isLoading: isLoading2 } = useGetSetting();
   const { guests, isLoading: isLoading3 } = useGetGuests();
-  const { register, formState, reset, handleSubmit, watch } = useForm({
+  const { register, formState, reset, handleSubmit, watch, control } = useForm({
     defaultValues: {
       isPaid: false,
       hasBreakfast: false,
@@ -115,7 +125,7 @@ function CreateNewBookingForm() {
         <Input type="email" id="email" defaultValue={email} disabled />
       </FormRow>
       <FormRow label="Start date" errors={errors?.startDate?.message}>
-        <Input
+        {/* <Input
           disabled={isAdding}
           type="date"
           id="startDate"
@@ -124,10 +134,27 @@ function CreateNewBookingForm() {
             setValueAs: (value) =>
               value ? new Date(value).toISOString() : null,
           })}
+        /> */}
+        <Controller
+          control={control}
+          name="startDate"
+          rules={{ required: "this field is required" }}
+          render={({ field: { onChange, value } }) => (
+            <StyledDatePicker
+              selected={value ? new Date(value) : null}
+              onChange={(date) => onChange(date ? date.toISOString() : null)}
+              dateFormat="yyyy/MM/dd"
+              placeholderText="Select Start Date"
+              disabled={isAdding}
+              portalId="root"
+              popperPlacement="right-start"
+              minDate={new Date()}
+            />
+          )}
         />
       </FormRow>
       <FormRow label="End date" errors={errors?.endDate?.message}>
-        <Input
+        {/* <Input
           disabled={isAdding}
           type="date"
           id="endDate"
@@ -136,6 +163,25 @@ function CreateNewBookingForm() {
             setValueAs: (value) =>
               value ? new Date(value).toISOString() : null,
           })}
+        /> */}
+        <Controller
+          control={control}
+          name="endDate"
+          rules={{ required: "this field is required" }}
+          render={({ field: { onChange, value } }) => (
+            <StyledDatePicker
+              selected={value ? new Date(value) : null}
+              onChange={(date) => onChange(date ? date.toISOString() : null)}
+              dateFormat="yyyy/MM/dd"
+              portalId="root"
+              disabled={isAdding}
+              placeholderText="Select End Date"
+              popperPlacement="right-start"
+              minDate={
+                watch("startDate") ? new Date(watch("startDate")) : new Date()
+              }
+            />
+          )}
         />
       </FormRow>
       <FormRow label="Number Of Guests" errors={errors?.numGuests?.message}>
