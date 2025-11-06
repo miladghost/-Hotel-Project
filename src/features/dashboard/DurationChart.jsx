@@ -137,7 +137,7 @@ function prepareData(startData, stays) {
       if (num >= 21) return incArrayValue(arr, "21+ nights");
       return ChartBox;
     }, startData)
-    .filter((obj) => obj.value > 0);
+    ?.filter((obj) => obj?.value > 0);
 
   return data;
 }
