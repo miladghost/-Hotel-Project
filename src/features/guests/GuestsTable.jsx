@@ -1,5 +1,6 @@
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
+import GuestRow from "./GuestRow";
 import { useGetGuests } from "./useGetGuests";
 
 function GuestsTable() {
@@ -7,7 +8,7 @@ function GuestsTable() {
   if (isLoading) return <Spinner />;
   console.log(guests);
   return (
-    <Table columns="1fr 1.8fr 2.2fr 1fr 1fr 1fr">
+    <Table columns="1fr 1fr 1fr 1fr 1fr 4rem">
       <Table.Header>
         <div>full name</div>
         <div>email</div>
@@ -18,7 +19,7 @@ function GuestsTable() {
       </Table.Header>
       <Table.Body
         data={guests}
-        render={(guest) => <div>{guest.fullName}</div>}
+        render={(guest) => <GuestRow guest={guest} />}
       />
     </Table>
   );
