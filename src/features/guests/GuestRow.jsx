@@ -16,6 +16,8 @@ const StyledFullName = styled.p`
     background-color: var(--color-brand-500);
     border-radius: 50%;
     padding: 4px;
+    width: 30px;
+    text-align: center;
   }
 `;
 const StyledEmail = styled.p`
@@ -27,6 +29,7 @@ const StyledEmail = styled.p`
 `;
 const StyledP = styled.p`
   color: var(--color-grey-900);
+  font-weight: 500;
 `;
 const StyledFlag = styled.img`
   width: 60px;
