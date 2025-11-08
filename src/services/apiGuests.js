@@ -5,3 +5,8 @@ export async function getGuestsApi() {
   if (error) throw new Error("couldn't get guests data from supabase");
   return data;
 }
+export async function deleteGuestApi(id) {
+  const { data, error } = await supabase.from("guests").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  return data;
+}

@@ -1,9 +1,12 @@
 import styled from "styled-components";
 import Table from "../../ui/Table";
-import { HiOutlineUser } from "react-icons/hi2";
+import { HiArrowTopRightOnSquare, HiOutlineUser } from "react-icons/hi2";
 import Menus from "../../ui/Menus";
 import { FaPencil } from "react-icons/fa6";
 import { FaTrashAlt } from "react-icons/fa";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { useDeleteGuest } from "./useDeleteGuest";
 const StyledFullName = styled.p`
   text-transform: capitalize;
   background-color: var(--color-grey-50);
@@ -42,29 +45,43 @@ const StyledFlag = styled.img`
   background-color: var(--color-grey-50);
   padding: 3px;
 `;
-function GuestRow({ guest }) {
+function GuestRow({
+  guest: { fullName, email, nationalID, nationality, countryFlag, id },
+}) {
+  const { remove, isDeleting } = useDeleteGuest();
   return (
-    <Table.Row>
-      <StyledFullName>
-        <span>
-          <HiOutlineUser />
-        </span>
-        {guest.fullName}
-      </StyledFullName>
-      <StyledEmail>{guest.email}</StyledEmail>
-      <StyledP>{guest.nationalID}</StyledP>
-      <StyledP>{guest.nationality}</StyledP>
-      <StyledFlag src={guest.countryFlag} />
-      <Menus>
-        <Menus.Menu>
-          <Menus.Toggle id="openGuest" />
-          <Menus.List id="openGuest">
-            <Menus.Button icon={<FaPencil />}>Edit</Menus.Button>
-            <Menus.Button icon={<FaTrashAlt />}>Delete</Menus.Button>
-          </Menus.List>
-        </Menus.Menu>
-      </Menus>
-    </Table.Row>
+    <Modal>
+      <Table.Row>
+        <StyledFullName>
+          <span>
+            <HiOutlineUser />
+          </span>
+          {fullName}
+        </StyledFullName>
+        <StyledEmail>{email}</StyledEmail>
+        <StyledP>{nationalID}</StyledP>
+        <StyledP>{nationality}</StyledP>
+        <StyledFlag src={countryFlag} />
+        <Menus>
+          <Menus.Menu>
+            <Menus.Toggle id="openGuest" />
+            <Menus.List id="openGuest">
+              <Menus.Button icon={<FaPencil />}>Edit</Menus.Button>
+              <Modal.Open opens="deleteGuest">
+                <Menus.Button icon={<FaTrashAlt />}>Delete</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+            <Modal.Window name="deleteGuest">
+              <ConfirmDelete
+                disabled={isDeleting}
+                onConfirm={() => remove(id)}
+                resourceName="Guest"
+              />
+            </Modal.Window>
+          </Menus.Menu>
+        </Menus>
+      </Table.Row>
+    </Modal>
   );
 }
 

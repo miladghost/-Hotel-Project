@@ -7,7 +7,7 @@ function Guest() {
   return (
     <>
       <Row type="horizontal">
-        <Heading>Guests..</Heading>
+        <Heading>Guests...</Heading>
         <p>filter/sort</p>
       </Row>
       <Row>

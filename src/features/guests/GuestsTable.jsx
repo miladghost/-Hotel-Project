@@ -19,7 +19,7 @@ function GuestsTable() {
       </Table.Header>
       <Table.Body
         data={guests}
-        render={(guest) => <GuestRow guest={guest} />}
+        render={(guest) => <GuestRow key={guest.id} guest={guest} />}
       />
     </Table>
   );

@@ -6,7 +6,7 @@ import Row from "../ui/Row";
 function Account() {
   return (
     <Row>
-      <Heading as="h1">Update Your Account....</Heading>
+      <Heading as="h1">Update Your Account...</Heading>
 
       <Row type="userAccount">
         <Heading as="h3">Update user data</Heading>
