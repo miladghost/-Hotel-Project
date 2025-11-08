@@ -1,7 +1,5 @@
-import { Form } from "react-hook-form";
-
 function CreateGuestForm() {
-  return <Form></Form>;
+  return <div>hi</div>;
 }
 
 export default CreateGuestForm;

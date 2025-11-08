@@ -1,3 +1,4 @@
+import AddGuest from "../features/guests/AddGuest";
 import GuestsTable from "../features/guests/GuestsTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
@@ -11,6 +12,7 @@ function Guest() {
       </Row>
       <Row>
         <GuestsTable />
+        <AddGuest />
       </Row>
     </>
   );

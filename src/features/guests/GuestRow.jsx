@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Table from "../../ui/Table";
 import { HiOutlineUser } from "react-icons/hi2";
-
+import Menus from "../../ui/Menus";
+import { FaPencil } from "react-icons/fa6";
+import { FaTrashAlt } from "react-icons/fa";
 const StyledFullName = styled.p`
   text-transform: capitalize;
   background-color: var(--color-grey-50);
@@ -15,9 +17,11 @@ const StyledFullName = styled.p`
   & span {
     background-color: var(--color-brand-500);
     border-radius: 50%;
-    padding: 4px;
-    width: 30px;
-    text-align: center;
+    padding: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 const StyledEmail = styled.p`
@@ -30,6 +34,7 @@ const StyledEmail = styled.p`
 const StyledP = styled.p`
   color: var(--color-grey-900);
   font-weight: 500;
+  text-transform: uppercase;
 `;
 const StyledFlag = styled.img`
   width: 60px;
@@ -50,6 +55,15 @@ function GuestRow({ guest }) {
       <StyledP>{guest.nationalID}</StyledP>
       <StyledP>{guest.nationality}</StyledP>
       <StyledFlag src={guest.countryFlag} />
+      <Menus>
+        <Menus.Menu>
+          <Menus.Toggle id="openGuest" />
+          <Menus.List id="openGuest">
+            <Menus.Button icon={<FaPencil />}>Edit</Menus.Button>
+            <Menus.Button icon={<FaTrashAlt />}>Delete</Menus.Button>
+          </Menus.List>
+        </Menus.Menu>
+      </Menus>
     </Table.Row>
   );
 }
