@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Table from "../../ui/Table";
-import { HiArrowTopRightOnSquare, HiOutlineUser } from "react-icons/hi2";
+import { HiOutlineUser } from "react-icons/hi2";
 import Menus from "../../ui/Menus";
 import { FaPencil } from "react-icons/fa6";
 import { FaTrashAlt } from "react-icons/fa";

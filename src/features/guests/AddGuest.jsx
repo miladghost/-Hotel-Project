@@ -3,14 +3,16 @@ import Button from "../../ui/Button";
 import CreateGuestForm from "./CreateGuestForm";
 function AddGuest() {
   return (
-    <Modal>
-      <Modal.Open opens="guestForm">
-        <Button>Add Guest</Button>
-      </Modal.Open>
-      <Modal.Window name="guestForm">
-        <CreateGuestForm />
-      </Modal.Window>
-    </Modal>
+    <div>
+      <Modal>
+        <Modal.Open opens="guestForm">
+          <Button>Add Guest</Button>
+        </Modal.Open>
+        <Modal.Window name="guestForm">
+          <CreateGuestForm />
+        </Modal.Window>
+      </Modal>
+    </div>
   );
 }
 

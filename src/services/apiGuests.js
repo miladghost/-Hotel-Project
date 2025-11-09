@@ -10,3 +10,11 @@ export async function deleteGuestApi(id) {
   if (error) throw new Error(error.message);
   return data;
 }
+export async function createNewGuestApi(newGuest) {
+  const { data, error } = await supabase
+    .from("guests")
+    .insert([newGuest])
+    .select();
+  if (error) throw new Error(error.message);
+  return data;
+}

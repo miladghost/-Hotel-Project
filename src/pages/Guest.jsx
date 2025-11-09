@@ -10,7 +10,7 @@ function Guest() {
         <Heading>Guests...</Heading>
         <p>filter/sort</p>
       </Row>
-      <Row>
+      <Row type="vertical">
         <GuestsTable />
         <AddGuest />
       </Row>
