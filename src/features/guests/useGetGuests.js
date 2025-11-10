@@ -10,10 +10,17 @@ export function useGetGuests() {
   const currentPage = !searchParam.get("page")
     ? 1
     : Number(searchParam.get("page"));
+  //search filter
+  const search = searchParam.get("search") || "";
+  //sort
+  const rawSort = searchParam.get("sortBy") || "fullName-asc";
+  const [field, direction] = rawSort.split("-");
+  const rawSortObj = { field, direction };
   const { data: { data: guests, count } = {}, isLoading } = useQuery({
-    queryKey: ["guests", currentPage],
-    queryFn: () => getGuestsApi({ currentPage }),
+    queryKey: ["guests", currentPage, search, rawSortObj],
+    queryFn: () => getGuestsApi({ currentPage, search, rawSortObj }),
   });
+
   const pageCount = Math.ceil(count / PAGE_SIZE);
   if (currentPage < pageCount) {
     queryClient.prefetchQuery({

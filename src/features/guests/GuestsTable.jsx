@@ -10,7 +10,7 @@ function GuestsTable() {
   console.log(guests);
   console.log(count);
   return (
-    <Table columns="1fr 1fr 1fr 1fr 1fr 1rem">
+    <Table columns="1fr 1fr 1fr 1fr 1fr 0.1fr">
       <Table.Header>
         <div>full name</div>
         <div>email</div>

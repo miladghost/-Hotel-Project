@@ -1,5 +1,6 @@
 import AddGuest from "../features/guests/AddGuest";
 import GuestsTable from "../features/guests/GuestsTable";
+import GuestTableOperations from "../features/guests/GuestTableOperations";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
@@ -8,7 +9,7 @@ function Guest() {
     <>
       <Row type="horizontal">
         <Heading>Guests...</Heading>
-        <p>filter/sort</p>
+        <GuestTableOperations />
       </Row>
       <Row type="vertical">
         <GuestsTable />
