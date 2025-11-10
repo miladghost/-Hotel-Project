@@ -22,7 +22,7 @@ function CreateGuestForm({ onCloseModal }) {
   function onSubmit(data) {
     const { nationalID, email } = data;
     const isDuplicate = guests.some(
-      (guest) => guest.email === email && guest.nationalID === nationalID
+      (guest) => guest.email === email || guest.nationalID === nationalID
     );
 
     const countryFlag = `https://flagcdn.com/${data.nationality.value.toLowerCase()}.svg`;
