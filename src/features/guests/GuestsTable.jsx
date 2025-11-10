@@ -1,10 +1,11 @@
+import React from "react";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import GuestRow from "./GuestRow";
 import { useGetGuests } from "./useGetGuests";
 
-function GuestsTable() {
+const GuestsTable = React.memo(function GuestsTable() {
   const { guests, isLoading, count } = useGetGuests();
   if (isLoading) return <Spinner />;
   console.log(guests);
@@ -28,6 +29,6 @@ function GuestsTable() {
       </Table.Footer>
     </Table>
   );
-}
+});
 
 export default GuestsTable;

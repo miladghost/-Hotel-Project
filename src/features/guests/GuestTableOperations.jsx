@@ -1,6 +1,6 @@
 import SortBy from "../../ui/SortBy";
 import TableOperations from "../../ui/TableOperations";
-import SearchBox from "./SearchBox";
+import SearchBox from "../../ui/SearchBox";
 function GuestTableOperations() {
   return (
     <TableOperations>
