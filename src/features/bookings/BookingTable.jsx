@@ -4,8 +4,6 @@ import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
 import { useGetBookings } from "./useGetBookings";
 import Pagination from "../../ui/Pagination";
-import AddBooking from "./AddBooking";
-
 function BookingTable() {
   const { bookings, isLoading, error, count } = useGetBookings();
   if (error) throw new Error("couldnt get bookings data");
