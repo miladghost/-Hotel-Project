@@ -7,12 +7,45 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import { useCreateNewGuest } from "./useCreateNewGuest";
-import styled from "styled-components";
 import { useGetGuests } from "./useGetGuests";
 import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
-const StyledSelect = styled(Select)``;
-function CreateGuestForm({ onCloseModal }) {
+
+const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
+  const costumeStyles = useMemo(
+    () => ({
+      control: (baseStyles, state) => ({
+        ...baseStyles,
+        backgroundColor: "var(--color-grey-50)",
+      }),
+      option: (baseStyles, state) => ({
+        ...baseStyles,
+        backgroundColor: state.isFocused
+          ? "var(--color-brand-500)"
+          : state.isSelected
+          ? "var(--color-brand-500)"
+          : "var(--color-grey-50)",
+        color: "var(--color-grey-800)",
+      }),
+      menu: (baseStyles) => ({
+        ...baseStyles,
+        backgroundColor: "var(--color-grey-50)",
+        overflow: "hidden",
+      }),
+      singleValue: (baseStyles) => ({
+        ...baseStyles,
+        backgroundColor: "var(--color-grey-50)",
+        color: "var(--color-grey-800)",
+      }),
+      input: (baseStyles) => ({
+        ...baseStyles,
+        color: "var(--color-grey-900)",
+        borderRadius: "var(--border-radius-sm)",
+        padding: "7px",
+      }),
+    }),
+    []
+  );
   const { guests, isLoading } = useGetGuests();
   const { addGuest, isAdding } = useCreateNewGuest();
   const { register, reset, formState, handleSubmit, control } = useForm();
@@ -26,7 +59,8 @@ function CreateGuestForm({ onCloseModal }) {
     );
 
     const countryFlag = `https://flagcdn.com/${data.nationality.value.toLowerCase()}.svg`;
-    if (isDuplicate) return toast.error("this user Added before");
+    if (isDuplicate)
+      return toast.error("this user Added before(check your email or ID)");
     addGuest(
       { ...data, countryFlag, nationality: data.nationality.label },
       {
@@ -55,41 +89,11 @@ function CreateGuestForm({ onCloseModal }) {
           name="nationality"
           rules={{ required: "this field is required" }}
           render={({ field }) => (
-            <StyledSelect
+            <Select
               {...field}
               options={options}
               placeholder="select Nationality"
-              styles={{
-                control: (baseStyles, state) => ({
-                  ...baseStyles,
-                  backgroundColor: "var(--color-grey-50)",
-                }),
-                option: (baseStyles, state) => ({
-                  ...baseStyles,
-                  backgroundColor: state.isFocused
-                    ? "var(--color-brand-500)"
-                    : state.isSelected
-                    ? "var(--color-brand-500)"
-                    : "var(--color-grey-50)",
-                  color: "var(--color-grey-800)",
-                }),
-                menu: (baseStyles) => ({
-                  ...baseStyles,
-                  backgroundColor: "var(--color-grey-50)",
-                  overflow: "hidden",
-                }),
-                singleValue: (baseStyles) => ({
-                  ...baseStyles,
-                  backgroundColor: "var(--color-grey-50)",
-                  color: "var(--color-grey-800)",
-                }),
-                input: (baseStyles) => ({
-                  ...baseStyles,
-                  color: "var(--color-grey-900)",
-                  borderRadius: "var(--border-radius-sm)",
-                  padding: "7px",
-                }),
-              }}
+              styles={costumeStyles}
             />
           )}
         />
@@ -137,6 +141,6 @@ function CreateGuestForm({ onCloseModal }) {
       </FormRow>
     </Form>
   );
-}
+});
 
 export default CreateGuestForm;

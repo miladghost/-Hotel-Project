@@ -40,15 +40,19 @@ function SearchBox() {
   const [value, setValue] = useState(searchParams.get("search") || "");
   useEffect(
     function () {
+      const params = new URLSearchParams(searchParams);
       const timer = setTimeout(() => {
-        if (value) searchParams.set("search", value);
-        else searchParams.delete("search");
-        setSearchParams(searchParams);
+        const trimmed = value.trim();
+        if (trimmed) {
+          params.set("search", trimmed);
+          params?.set("page", 1); //در هر فیلتر صفحه رو بزار 1 تا مشکل پیش نیاد
+        } else params.delete("search");
+        setSearchParams(params);
       }, 400);
       return () => clearTimeout(timer);
     },
 
-    [searchParams, setSearchParams, value]
+    [setSearchParams, value]
   );
   console.log(value);
   return (
