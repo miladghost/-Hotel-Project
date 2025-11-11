@@ -35,6 +35,7 @@ const StyledBsSearch = styled(BsSearch)`
   color: var(--color-grey-50);
   font-size: 2rem;
 `;
+
 function SearchBox() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [value, setValue] = useState(searchParams.get("search") || "");
@@ -51,7 +52,7 @@ function SearchBox() {
       }, 400);
       return () => clearTimeout(timer);
     },
-
+    // eslint-disable-next-line
     [setSearchParams, value]
   );
   console.log(value);
