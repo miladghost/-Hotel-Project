@@ -20,7 +20,6 @@ const CreateGuestForm = React.memo(function CreateGuestForm({
   const { guests, isLoading } = useGetGuests();
   const { addGuest, isAdding } = useCreateNewGuest();
   const { editGuest, isEditing } = useUpdateGuests();
-  const { nationality } = editValues;
   console.log(editValues);
   const isEditSession = editId ? true : false;
   const costumeStyles = useMemo(
