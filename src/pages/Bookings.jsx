@@ -1,5 +1,7 @@
+import AddBooking from "../features/bookings/AddBooking";
 import BookingTable from "../features/bookings/BookingTable";
 import BookingTableOperations from "../features/bookings/BookingTableOperations";
+import DeleteAll from "../features/bookings/DeleteAll";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
@@ -10,7 +12,11 @@ function Bookings() {
         <Heading as="h1">All bookings</Heading>
         <BookingTableOperations />
       </Row>
-      <BookingTable />
+      <Row>
+        <BookingTable />
+        <AddBooking />
+        <DeleteAll />
+      </Row>
     </>
   );
 }

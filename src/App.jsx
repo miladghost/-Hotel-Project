@@ -10,6 +10,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // import Booking from "./pages/Booking";
 // import Checkin from "./pages/Chekin";
 // import AppLayout from "./ui/AppLayout";
+// import Guest from "./pages/Guest";
+// import CreateNewBookingForm from "./features/bookings/CreateNewBookingForm";
 import ProtectedAuth from "./ui/ProtectedAuth";
 import GlobalStyles from "./styles/GlobalStyles";
 import Spinner from "./ui/Spinner";
@@ -29,6 +31,10 @@ const Settings = lazy(() => import("./pages/Settings"));
 const Users = lazy(() => import("./pages/Users"));
 const AppLayout = lazy(() => import("./ui/AppLayout"));
 const Cabins = lazy(() => import("./pages/Cabins"));
+const Guest = lazy(() => import("./pages/Guest"));
+const CreateNewBookingForm = lazy(() =>
+  import("./features/bookings/CreateNewBookingForm")
+);
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: { staleTime: 0 },
@@ -53,11 +59,13 @@ function App() {
                 <Route index element={<Navigate replace to="dashboard" />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="bookings" element={<Bookings />} />
+                <Route path="addBooking" element={<CreateNewBookingForm />} />
                 <Route path="bookings/:bookingId" element={<Booking />} />
                 <Route path="checkin/:bookingId" element={<Checkin />} />
                 <Route path="cabins" element={<Cabins />} />
                 <Route path="account" element={<Account />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="guests" element={<Guest />} />
                 <Route path="users" element={<Users />} />
               </Route>
               <Route path="login" element={<Login />} />

@@ -67,6 +67,15 @@ export async function editNewCabin(newCabin, id) {
   }
   return data;
 }
+export async function getCabinDataForBooking(id) {
+  const { data, error } = await supabase
+    .from("cabins")
+    .select("maxCapacity,regularPrice,discount")
+    .eq("id", id)
+    .single();
+  if (error) throw new Error("couldnt get specefic cabin data with that id");
+  return data;
+}
 // //Combined Version
 // export default async function createEditCabin(newCabin, id) {
 //   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);

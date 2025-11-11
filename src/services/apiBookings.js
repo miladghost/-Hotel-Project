@@ -121,3 +121,31 @@ export async function deleteBookingApi(id) {
   }
   return data;
 }
+export async function deleteAllBooking() {
+  const { error } = await supabase.from("bookings").delete().neq("id", 0);
+  if (error) throw new Error(error.message);
+}
+export async function addBookingApi(booking) {
+  if (!booking.cabinId || !booking.startDate || !booking.endDate) {
+    throw new Error("No booking object founded");
+  }
+
+  const { data: existingDate, error: error2 } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("cabinId", booking.cabinId)
+    .lte("startDate", booking.endDate)
+    .gte("endDate", booking.startDate);
+
+  if (error2) throw new Error(error2.message);
+  if (existingDate.length > 0)
+    throw new Error(
+      "you cant add at this date please change your booking date"
+    );
+  const { data, error } = await supabase
+    .from("bookings")
+    .insert([booking])
+    .select();
+  if (error) throw new Error(error.message);
+  return data;
+}

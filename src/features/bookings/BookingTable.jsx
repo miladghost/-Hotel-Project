@@ -4,6 +4,7 @@ import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
 import { useGetBookings } from "./useGetBookings";
 import Pagination from "../../ui/Pagination";
+import AddBooking from "./AddBooking";
 
 function BookingTable() {
   const { bookings, isLoading, error, count } = useGetBookings();
@@ -40,9 +41,10 @@ function BookingTable() {
   //   return (a[sortName] - b[sortName]) * modifire;
   // });
 
+  // ("0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem");
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="1fr 1.8fr 2.2fr 1fr 1fr 1fr">
         <Table.Header>
           <div>Cabin</div>
           <div>Guest</div>
