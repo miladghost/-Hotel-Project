@@ -1,5 +1,6 @@
 # Hotel Management Project
 
-its my very first time project in React and Web development World!
-its build by React Quary (Tanstack) + Supabase + React Router + Styled Components (for styling) + Toast notifications + React Recharts
-Its a real World Example for Hotels with Awsome feautures!
+its my very first time full stack project in React and Web development World!
+its build by React Quary (Tanstack) + Supabase + React Router + Styled Components (for styling) + Toast notifications + React Recharts + react-select + react-hook-form + react-datePicker ....
+Its a real World Example for internationals Hotels with Awsome feautures like booking,authentication,cabins,guests,settings,check-in-checkout...
+this project is optimized by memoizing some things..
