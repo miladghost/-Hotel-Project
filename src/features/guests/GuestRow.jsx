@@ -7,6 +7,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteGuest } from "./useDeleteGuest";
+import CreateGuestForm from "./CreateGuestForm";
 const StyledFullName = styled.p`
   text-transform: capitalize;
   background-color: var(--color-grey-50);
@@ -45,9 +46,8 @@ const StyledFlag = styled.img`
   background-color: var(--color-grey-50);
   padding: 3px;
 `;
-function GuestRow({
-  guest: { fullName, email, nationalID, nationality, countryFlag, id },
-}) {
+function GuestRow({ guest }) {
+  const { fullName, email, nationalID, nationality, countryFlag, id } = guest;
   const { remove, isDeleting } = useDeleteGuest();
   return (
     <Modal>
@@ -66,11 +66,16 @@ function GuestRow({
           <Menus.Menu>
             <Menus.Toggle id="openGuest" />
             <Menus.List id="openGuest">
-              <Menus.Button icon={<FaPencil />}>Edit</Menus.Button>
+              <Modal.Open opens="editGuest">
+                <Menus.Button icon={<FaPencil />}>Edit</Menus.Button>
+              </Modal.Open>
               <Modal.Open opens="deleteGuest">
                 <Menus.Button icon={<FaTrashAlt />}>Delete</Menus.Button>
               </Modal.Open>
             </Menus.List>
+            <Modal.Window name="editGuest">
+              <CreateGuestForm guestToEdit={guest} />
+            </Modal.Window>
             <Modal.Window name="deleteGuest">
               <ConfirmDelete
                 disabled={isDeleting}

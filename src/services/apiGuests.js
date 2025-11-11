@@ -37,3 +37,12 @@ export async function createNewGuestApi(newGuest) {
   if (error) throw new Error(error.message);
   return data;
 }
+export async function updateGusetApi({ newGuest, id }) {
+  const { data, error } = await supabase
+    .from("guests")
+    .update({ ...newGuest })
+    .eq("id", id)
+    .select();
+  if (error) throw new Error(error.message);
+  return data;
+}

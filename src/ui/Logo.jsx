@@ -8,11 +8,14 @@ const StyledLogo = styled.div`
 const Img = styled.img`
   height: 9.6rem;
   width: auto;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  margin: 20px 2px;
 `;
 
 function Logo() {
   const { isDark } = useDark();
-  const src = isDark ? "img/logo-dark.png" : "img/logo-light.png";
+  const src = isDark ? "img/hotel-Light.jpg" : "img/hotel-Dark.jpg";
   return (
     <StyledLogo>
       <Img src={src} alt="Logo" />

@@ -10,8 +10,19 @@ import { useCreateNewGuest } from "./useCreateNewGuest";
 import { useGetGuests } from "./useGetGuests";
 import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
+import { useUpdateGuests } from "./useUpdateGuests";
 
-const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
+const CreateGuestForm = React.memo(function CreateGuestForm({
+  onCloseModal,
+  guestToEdit = {},
+}) {
+  const { id: editId, ...editValues } = guestToEdit;
+  const { guests, isLoading } = useGetGuests();
+  const { addGuest, isAdding } = useCreateNewGuest();
+  const { editGuest, isEditing } = useUpdateGuests();
+  const { nationality } = editValues;
+  console.log(editValues);
+  const isEditSession = editId ? true : false;
   const costumeStyles = useMemo(
     () => ({
       control: (baseStyles, state) => ({
@@ -46,37 +57,66 @@ const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
     }),
     []
   );
-  const { guests, isLoading } = useGetGuests();
-  const { addGuest, isAdding } = useCreateNewGuest();
-  const { register, reset, formState, handleSubmit, control } = useForm();
-  const { errors } = formState;
   const options = useMemo(() => countryList().getData(), []);
+  const { register, reset, formState, handleSubmit, control } = useForm({
+    defaultValues: isEditSession
+      ? {
+          ...editValues,
+          nationality: options.find(
+            (option) => option.label === editValues.nationality
+          ),
+        }
+      : {},
+  });
+  const { errors } = formState;
+
   if (isLoading) return <Spinner />;
+
   function onSubmit(data) {
     const { nationalID, email } = data;
     const isDuplicate = guests.some(
-      (guest) => guest.email === email || guest.nationalID === nationalID
+      (guest) =>
+        guest.id !== editId &&
+        (guest.email === email || guest.nationalID === nationalID)
     );
-
     const countryFlag = `https://flagcdn.com/${data.nationality.value.toLowerCase()}.svg`;
     if (isDuplicate)
       return toast.error("this user Added before(check your email or ID)");
-    addGuest(
-      { ...data, countryFlag, nationality: data.nationality.label },
-      {
-        onSuccess: () => {
-          reset();
-          onCloseModal?.();
+    if (isEditSession) {
+      editGuest(
+        {
+          newGuest: {
+            ...data,
+            nationality: data.nationality.label,
+            countryFlag,
+          },
+          id: editId,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            onCloseModal?.();
+            reset();
+          },
+        }
+      );
+    } else {
+      addGuest(
+        { ...data, countryFlag, nationality: data.nationality.label },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
+    }
   }
 
   return (
     <Form type="modal" onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Full Name" errors={errors?.fullName?.message}>
         <Input
-          disabled={isAdding}
+          disabled={isAdding || isEditing}
           type="text"
           id="fullName"
           {...register("fullName", { required: "this field is required" })}
@@ -84,7 +124,6 @@ const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
       </FormRow>
       <FormRow label="Nationality" errors={errors?.nationality?.message}>
         <Controller
-          disabled={isAdding}
           control={control}
           name="nationality"
           rules={{ required: "this field is required" }}
@@ -94,13 +133,14 @@ const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
               options={options}
               placeholder="select Nationality"
               styles={costumeStyles}
+              isDisabled={isAdding || isEditing}
             />
           )}
         />
       </FormRow>
       <FormRow label="Email" errors={errors?.email?.message}>
         <Input
-          disabled={isAdding}
+          disabled={isAdding || isEditing}
           type="text"
           id="email"
           {...register("email", {
@@ -114,7 +154,7 @@ const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
       </FormRow>
       <FormRow label="National ID" errors={errors?.nationalID?.message}>
         <Input
-          disabled={isAdding}
+          disabled={isAdding || isEditing}
           type="text"
           id="nationalID"
           {...register("nationalID", {
@@ -129,9 +169,9 @@ const CreateGuestForm = React.memo(function CreateGuestForm({ onCloseModal }) {
         />
       </FormRow>
       <FormRow>
-        <Button>Add Guest</Button>
+        <Button> {isEditSession ? "Edit Guest" : "Add Guest"}</Button>
         <Button
-          disabled={isAdding}
+          disabled={isAdding || isEditing}
           variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
