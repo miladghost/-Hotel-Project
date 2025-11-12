@@ -6,7 +6,7 @@ export async function getBookings({ filterObj, sortByObj, currentPage }) {
   query = supabase
     .from("bookings")
     .select(
-      "id,created_at,startDate,endDate,numNights,numGuests,totalPrice,status,cabins(name),guests(fullName,email)",
+      "id,created_at,startDate,endDate,numNights,numGuests,totalPrice,status,guestId,cabins(name),guests(fullName,email)",
       { count: "exact" }
     );
   if (filterObj) query = query.eq(filterObj.field, filterObj.value);

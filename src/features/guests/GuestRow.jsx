@@ -8,6 +8,8 @@ import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useDeleteGuest } from "./useDeleteGuest";
 import CreateGuestForm from "./CreateGuestForm";
+import Tag from "../../ui/Tag";
+import { useMemo } from "react";
 const StyledFullName = styled.p`
   text-transform: capitalize;
   background-color: var(--color-grey-50);
@@ -39,6 +41,7 @@ const StyledP = styled.p`
   color: var(--color-grey-900);
   font-weight: 500;
   text-transform: uppercase;
+  font-size: 1.3rem;
 `;
 const StyledFlag = styled.img`
   width: 60px;
@@ -46,9 +49,21 @@ const StyledFlag = styled.img`
   background-color: var(--color-grey-50);
   padding: 3px;
 `;
-function GuestRow({ guest }) {
-  const { fullName, email, nationalID, nationality, countryFlag, id } = guest;
+const StyledDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.9rem;
+`;
+function GuestRow({ guest, bookingForGuest }) {
   const { remove, isDeleting } = useDeleteGuest();
+  const { fullName, email, nationalID, nationality, countryFlag, id } = guest;
+  const hasBooking = useMemo(() => {
+    return (
+      bookingForGuest?.length > 0 &&
+      bookingForGuest?.some((booking) => booking?.guestId === id)
+    );
+  }, [bookingForGuest, id]);
   return (
     <Modal>
       <Table.Row>
@@ -61,7 +76,15 @@ function GuestRow({ guest }) {
         <StyledEmail>{email}</StyledEmail>
         <StyledP>{nationalID}</StyledP>
         <StyledP>{nationality}</StyledP>
-        <StyledFlag src={countryFlag} />
+        <StyledDiv>
+          <StyledFlag src={countryFlag} />
+          {hasBooking ? (
+            <Tag type="blue">has booking</Tag>
+          ) : (
+            <Tag type="red">no booking</Tag>
+          )}
+        </StyledDiv>
+
         <Menus>
           <Menus.Menu>
             <Menus.Toggle id="openGuest" />

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
-import Uploader from "../data/Uploader";
 const Aside = styled.aside`
   background-color: var(--color-grey-50);
   padding: 1.6rem 2rem 3rem;

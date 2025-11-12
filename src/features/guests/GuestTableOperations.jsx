@@ -1,9 +1,18 @@
 import SortBy from "../../ui/SortBy";
 import TableOperations from "../../ui/TableOperations";
 import SearchBox from "../../ui/SearchBox";
+// import Filter from "../../ui/Filter";
 function GuestTableOperations() {
   return (
     <TableOperations>
+      {/* <Filter
+        filterField="bookingStatus"
+        options={[
+          { value: "all", label: "All" },
+          { value: "hasBooking", label: "has booking" },
+          { value: "noBooking", label: "no booking" },
+        ]}
+      /> */}
       <SortBy
         options={[
           { value: "fullName-asc", label: "sort by A-Z" },
