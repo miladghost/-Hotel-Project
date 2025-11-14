@@ -11,18 +11,20 @@ const Img = styled.img`
   height: 11.4rem;
   width: auto;
   border-radius: 30px;
+  border: none;
   transition: all 0.3s;
   cursor: pointer;
   &:hover {
-    padding: 4px;
-    box-shadow: 7px 9px 10px 1px var(--color-grey-600);
+    padding: 2px;
+    box-shadow: 9px 9px 10px 1px var(--color-grey-300);
+    translate: calc(-6px);
   }
 `;
 
 function Logo() {
   const navigate = useNavigate();
   const { isDark } = useDark();
-  const src = isDark ? "img/dark.png" : "img/light.png";
+  const src = isDark ? "img/dark-hotel-logo.png" : "img/light-hotel-logo.png";
   return (
     <StyledLogo>
       <Img

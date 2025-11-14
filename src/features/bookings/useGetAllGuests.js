@@ -4,7 +4,7 @@ import { getAllGuestsApi } from "../../services/apiGuests";
 export function useGetAllGuests() {
   const { data: allGuests, isLoading } = useQuery({
     queryFn: getAllGuestsApi,
-    queryKey: ["allGuests"],
+    queryKey: ["guests"],
   });
   return { allGuests, isLoading };
 }
