@@ -46,3 +46,11 @@ export async function updateGusetApi({ newGuest, id }) {
   if (error) throw new Error(error.message);
   return data;
 }
+export async function getAllGuestsApi() {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return data;
+}

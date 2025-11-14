@@ -3,17 +3,17 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
-import { useGetCabinData } from "../cabins/useGetCabinData";
 import Textarea from "../../ui/Textarea";
-import { Controller, useForm } from "react-hook-form";
 import Button from "../../ui/Button";
-import { useNavigate } from "react-router-dom";
 import CheckboxV2 from "../../ui/CheckboxV2";
+import DatePicker from "react-datepicker";
+import { useGetCabinData } from "../cabins/useGetCabinData";
+import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { subtractDates } from "../../utils/helpers";
 import { useGetSetting } from "../settings/useGetSetting";
-import { useGetGuests } from "../guests/useGetGuests";
 import { useCreateNewBooking } from "./useCreateNewBooking";
-import DatePicker from "react-datepicker";
+import { useGetAllGuests } from "./useGetAllGuests";
 import "react-datepicker/dist/react-datepicker.css";
 const Styledselect = styled.select`
   border-radius: var(--border-radius-sm);
@@ -34,7 +34,7 @@ function CreateNewBookingForm() {
   const { addBooking, isAdding } = useCreateNewBooking();
   const { isLoading: isLoading1, cabinsData } = useGetCabinData();
   const { settingData, isLoading: isLoading2 } = useGetSetting();
-  const { guests, isLoading: isLoading3 } = useGetGuests();
+  const { allGuests, isLoading: isLoading3 } = useGetAllGuests();
   const { register, formState, reset, handleSubmit, watch, control } = useForm({
     defaultValues: {
       isPaid: false,
@@ -45,7 +45,7 @@ function CreateNewBookingForm() {
   const { breakfastPrice } = settingData;
   const cabinId = watch("cabinId");
   const guestId = watch("guestId");
-  const email = guests
+  const email = allGuests
     ?.filter((guest) => guest.id === Number(guestId))
     ?.at(0)?.email;
   const maxCapacity = cabinsData
@@ -114,7 +114,7 @@ function CreateNewBookingForm() {
           })}
         >
           <option value="">select guest...</option>
-          {guests.map((guest) => (
+          {allGuests?.map((guest) => (
             <option value={guest.id} key={guest.id}>
               {guest.fullName}
             </option>

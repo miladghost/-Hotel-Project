@@ -4,9 +4,8 @@ import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import GuestRow from "./GuestRow";
 import { useGetGuests } from "./useGetGuests";
-import { useGetBookingForGuests } from "./useGetBookingforGuests";
+import { useGetBookingForGuests } from "./useGetBookingForGuests";
 // import { useSearchParams } from "react-router-dom";
-
 const GuestsTable = React.memo(function GuestsTable() {
   // const [searchParams] = useSearchParams();
   const { bookingForGuest, isLoading: isLoading2 } = useGetBookingForGuests();
