@@ -3,8 +3,6 @@ import { getGuestsApi } from "../../services/apiGuests";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_SIZE } from "../../utils/constants";
 import { useMemo } from "react";
-import supabase from "../../services/supabase";
-
 export function useGetGuests() {
   const [searchParam] = useSearchParams();
   const queryClient = useQueryClient();

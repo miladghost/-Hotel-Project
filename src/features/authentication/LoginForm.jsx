@@ -6,7 +6,7 @@ import FormRowVertical from "../../ui/FormRowVertical";
 import { useLogin } from "./useLogin";
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("sovina5359@filipx.com");
   const [password, setPassword] = useState("");
   const { login, isLogin } = useLogin();
   function handleSubmit(e) {
