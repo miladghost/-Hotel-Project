@@ -5,6 +5,8 @@ its build by React 18 & React Quary (Tanstack) + Supabase + React Router + Style
 Its a real World Example for internationals Hotels with Awsome feautures like booking,authentication,cabins,guests,settings,check-in-checkout...
 i optimized it with memoizing to reduce extra rendering,
 you can check out my project on:
+
+
 vercel:
 https://milad-hotel-project2025.vercel.app/
 
